@@ -1,0 +1,76 @@
+#include "iostream"
+#define MAXQ 110 * 110 * 110
+#define INF 0x7fffffff
+
+using namespace std;
+
+int N;
+int map[110][110], sum[110][110];
+int dc[] = {0, 0, -1, 1};
+int dr[] = {-1, 1, 0, 0};
+
+typedef struct{
+    int r, c;
+}QUEUE;
+
+QUEUE Queue[MAXQ];
+int rp = 0, wp = 0;
+
+int Enqueue(int r, int c) {
+    if(wp == MAXQ) return 0;
+    Queue[wp].r = r;
+    Queue[wp].c = c;
+    wp++;
+    return 1;
+}
+
+int Dequeue(QUEUE *p) {
+    if(wp == rp) return 0;
+    *p = Queue[rp++];
+    return 1;
+}
+
+void input_Data() {
+    cin >> N;     // In exercise, N is 3
+    
+    for(int i = 1;i <= N;i++) {
+        for(int j = 1;j <= N;j++) {
+            cin >> map[i][j];        // In exercise, they are 0, 4, 1, 2, 5, 3, 6, 2, 0
+            sum[i][j] = INF;
+        }
+    }
+}
+
+int BFS() {
+    int r, c, cur_sum, rr, cc;
+    QUEUE t;
+    
+    sum[1][1] = map[1][1];
+    Enqueue(1, 1);
+    
+    while(Dequeue(&t)) {
+        r = t.r;
+        c = t.c;
+        cur_sum = sum[r][c];
+        for(int i = 0;i < 4;i++) {
+            rr = r + dr[i];
+            cc = c + dc[i];
+            if(rr >= 1 && rr <= N && cc >= 1 && cc <= N) {
+                if(sum[rr][cc] > cur_sum + map[rr][cc]) {
+                    sum[rr][cc] = cur_sum + map[rr][cc];
+                    Enqueue(rr, cc);
+                }
+            }
+        }
+    }
+    return sum[N][N];
+}
+
+
+int main() {
+    int res = 0;
+    input_Data();
+    res = BFS();
+    cout << res << endl;
+    return 0;
+}
