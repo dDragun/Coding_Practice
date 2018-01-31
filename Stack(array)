@@ -1,0 +1,54 @@
+#include "iostream"
+ 
+#define MAX 100
+ 
+using namespace std;
+ 
+int top = -1;
+int stack[MAX];
+ 
+void init_stack() {
+    top = -1;
+}
+ 
+int push(unsigned int n) {
+    if(top >= MAX - 1) {
+        cout << "Stack Overflowed!" << endl;
+        return -1;
+    }
+    stack[++top] = n;
+    return n;
+}
+ 
+int pop() {
+    if(top < 0) {
+        cout << "Stack Underflow!" << endl;
+        return -1;
+    }
+    return stack[top--];
+}
+ 
+void printstack() {
+    for(int i = top; i >= 0;i--) {
+        cout << stack[i] << endl;
+    }
+}
+ 
+int main() {
+    int num = 0;
+    cin >> num;
+    
+    init_stack();
+    for(int i = 0;i < num;i++) {
+        push(i);
+    }
+    printstack();
+    
+    cout << "\n\n";
+    
+    for(int i = num - 1;i > 1;i--) {
+        pop();
+    }
+    printstack();
+    return 0;
+}
