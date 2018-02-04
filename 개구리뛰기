@@ -1,0 +1,60 @@
+//
+//  main.cpp
+//  C++PlayGround
+//
+//  Created by Gun Du on 2018. 1. 30..
+//  Copyright © 2018년 Gun Du. All rights reserved.
+//
+
+#include "iostream"
+#define MAXA 10000 * 100000
+using namespace std;
+
+int T, n, K;
+int a[MAXA];
+int res = 0, pos, lastStone = 0;
+
+
+void Input_Data() {
+    cin >> n;
+    for(int i = 1;i <= n;i++) cin >> a[i];
+    lastStone = a[n];
+    cin >> K;
+}
+
+int Check_Stone(int b) {
+    int i = 0, j = 0;
+    for(i = n;i >= 1;i--) {
+        for(j = K;j >= 1;j--) {
+            if(b + j == a[i] ) {
+                pos = a[i];
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int Jump(int b) {
+    if(b >= lastStone) return 1;
+    if(Check_Stone(b)) {
+        res++;
+        if(Jump(pos)) return 1;
+    }
+    return 0;
+}
+
+int main() {
+    //cin >> T;
+    //for(int i = 0;i < T;i++) {
+        pos = 0;
+        Input_Data();
+        if(Jump(pos)) {
+            cout << res << endl;
+        }
+        else {
+            cout << "-1" << endl;
+        }
+    //}
+    return 0;
+}
